@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViMusic.API", "ViMusic.API\ViMusic.API.csproj", "{3A12A128-4A8C-42EB-B902-6C38CE0FFD78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViMusic.Domain", "ViMusic.Domain\ViMusic.Domain.csproj", "{B3BB259E-86A9-437D-A31A-E1BAA9C3C403}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViMusic.Infrastructure", "ViMusic.Infrastructure\ViMusic.Infrastructure.csproj", "{712FBBAD-C437-4C9B-8909-853B1A89E9C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViMusic.Application", "ViMusic.Application\ViMusic.Application.csproj", "{ADB89C6A-2980-417E-BBC3-F85E3E4D2B6E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3A12A128-4A8C-42EB-B902-6C38CE0FFD78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A12A128-4A8C-42EB-B902-6C38CE0FFD78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A12A128-4A8C-42EB-B902-6C38CE0FFD78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A12A128-4A8C-42EB-B902-6C38CE0FFD78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3BB259E-86A9-437D-A31A-E1BAA9C3C403}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3BB259E-86A9-437D-A31A-E1BAA9C3C403}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3BB259E-86A9-437D-A31A-E1BAA9C3C403}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3BB259E-86A9-437D-A31A-E1BAA9C3C403}.Release|Any CPU.Build.0 = Release|Any CPU
+		{712FBBAD-C437-4C9B-8909-853B1A89E9C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{712FBBAD-C437-4C9B-8909-853B1A89E9C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{712FBBAD-C437-4C9B-8909-853B1A89E9C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{712FBBAD-C437-4C9B-8909-853B1A89E9C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADB89C6A-2980-417E-BBC3-F85E3E4D2B6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADB89C6A-2980-417E-BBC3-F85E3E4D2B6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADB89C6A-2980-417E-BBC3-F85E3E4D2B6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADB89C6A-2980-417E-BBC3-F85E3E4D2B6E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
