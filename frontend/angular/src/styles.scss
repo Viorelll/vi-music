@@ -1,0 +1,11 @@
+/* You can add global styles to this file, and also import other style files */
+@import "nullstyle.scss";
+
+// Import fonts here
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+body {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  background-color: #E5E5E5;
+}

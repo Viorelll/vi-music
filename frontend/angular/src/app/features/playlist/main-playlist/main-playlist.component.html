@@ -1,0 +1,18 @@
+ <div *ngFor="let song of songBriefDtos; index as i">
+      <div class="song__container">
+        <div class="main__song">
+          <div class="song__image">
+            <img src="{{song.coverImageUrl}}" alt="{{song.title}}" width="40" height="40">
+          </div>
+          <div class="song__info">
+            <div class="song__text">
+              <div class="song__number">{{i + 1}} -</div>
+              <div class="song__artist">{{song.artistName}} -</div>
+              <div class="song__title">{{song.title}}</div>
+            </div>
+            <div class="song__duration">{{song.genreName}}</div>
+          </div>
+        </div>
+        <div class="line"></div>
+    </div>
+</div>
