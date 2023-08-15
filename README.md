@@ -5,4 +5,4 @@ Create WMusic Template
 
 
 
-![alt text](https://github.com/Viorelll/clean-architecture-dotnet/blob/master/ViusicTemplate.png?raw=true)
+![alt text](https://github.com/Viorelll/clean-architecture-dotnet/blob/main/ViMusicTemplate.png?raw=true)
