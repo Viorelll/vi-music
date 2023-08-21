@@ -27,7 +27,7 @@ export class PlaylistDetailsComponent {
 
         this.playlistName = playlist.name;
         playlist.songs.map((song: SongBriefDto)  => {
-          this.songs.push(new Song('../../../../assets/songs/Dan Balan - Chica Bomb Official Video HD Hype Williams.mp3', song.title!, song.artistName!, song.coverImageUrl!, song.genreName!))
+          this.songs.push(new Song(song.locationUrl!, song.title!, song.artistName!, song.coverImageUrl!, song.genreName!))
         });
 
         this.playlistSongCount = playlist.songs.length;

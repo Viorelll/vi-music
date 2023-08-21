@@ -796,6 +796,7 @@ export interface IPlaylistBriefDto {
 export class SongBriefDto implements ISongBriefDto {
     id?: number;
     title?: string | undefined;
+    locationUrl?: string | undefined;
     coverImageUrl?: string | undefined;
     genreName?: string | undefined;
     artistName?: string | undefined;
@@ -813,6 +814,7 @@ export class SongBriefDto implements ISongBriefDto {
         if (_data) {
             this.id = _data["id"];
             this.title = _data["title"];
+            this.locationUrl = _data["locationUrl"];
             this.coverImageUrl = _data["coverImageUrl"];
             this.genreName = _data["genreName"];
             this.artistName = _data["artistName"];
@@ -830,6 +832,7 @@ export class SongBriefDto implements ISongBriefDto {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["title"] = this.title;
+        data["locationUrl"] = this.locationUrl;
         data["coverImageUrl"] = this.coverImageUrl;
         data["genreName"] = this.genreName;
         data["artistName"] = this.artistName;
@@ -840,6 +843,7 @@ export class SongBriefDto implements ISongBriefDto {
 export interface ISongBriefDto {
     id?: number;
     title?: string | undefined;
+    locationUrl?: string | undefined;
     coverImageUrl?: string | undefined;
     genreName?: string | undefined;
     artistName?: string | undefined;

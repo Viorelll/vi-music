@@ -484,6 +484,10 @@
             "type": "string",
             "nullable": true
           },
+          "locationUrl": {
+            "type": "string",
+            "nullable": true
+          },
           "coverImageUrl": {
             "type": "string",
             "nullable": true
