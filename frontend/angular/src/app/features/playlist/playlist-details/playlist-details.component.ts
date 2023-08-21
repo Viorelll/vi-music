@@ -12,6 +12,7 @@ export class PlaylistDetailsComponent {
   public songs: Song[] = [];
   public playlistName: string = "";
   public playlistDescription: string = "";
+  public playlistCoverImage: string = "";
   public playlistSongCount: number = 0;
 
   constructor(
@@ -26,6 +27,8 @@ export class PlaylistDetailsComponent {
         console.log(playlist);
 
         this.playlistName = playlist.name;
+        this.playlistCoverImage = playlist.coverImageUrl;
+
         playlist.songs.map((song: SongBriefDto)  => {
           this.songs.push(new Song(song.locationUrl!, song.title!, song.artistName!, song.coverImageUrl!, song.genreName!))
         });
