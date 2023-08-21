@@ -1,13 +1,15 @@
 export class Song {
-  imageUrl: string;
-  artistName: string;
-  title: string;
-  duration: string;
+  url: string;
+  name: string;
+  artist: string;
+  coverImageUrl: string;
+  genre: string;
 
-  constructor(imageUrl: string, artistName: string, title: string, duration: string) {
-    this.imageUrl = imageUrl;
-    this.artistName = artistName;
-    this.title = title;
-    this.duration = duration;
+  constructor(url: string, name: string, artist: string, coverImageUrl: string, genre: string) {
+    this.url = url;
+    this.name = name;
+    this.artist = artist;
+    this.coverImageUrl = coverImageUrl;
+    this.genre = genre;
   }
 }

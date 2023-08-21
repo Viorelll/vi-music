@@ -6,13 +6,18 @@ import { AlbumComponent } from './pages/album-page/album/album.component';
 import { HomeComponent } from './pages/home-page/home/home.component';
 
 export const routes: Routes = [
+  {
+    path: 'playlists',
+    component: PlaylistPageComponent,
+    loadChildren: () => import('./features/playlist/playlist.module').then(m => m.PlaylistModule),
+    data: { preload: true }
+  },
+  { path: 'albums', component: AlbumComponent },
   { path: '', component: HomeComponent, pathMatch: 'full' },
-  { path: 'playlists', component: PlaylistPageComponent },
-  { path: 'albums', component: AlbumComponent }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

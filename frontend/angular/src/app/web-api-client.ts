@@ -15,6 +15,352 @@ import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angula
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
+export interface IPlaylistsClient {
+    getPlaylistsWithPagination(pageNumber: number | undefined, pageSize: number | undefined): Observable<PaginatedListOfPlaylistBriefDto>;
+    create(command: CreatePlaylistCommand): Observable<number>;
+    getPlaylistSongsWithPagination(id: number | undefined): Observable<PlaylistBriefDto>;
+    addSongToPlaylist(command: AddSongToPlaylistCommand): Observable<number>;
+    update(id: number, command: UpdatePlaylistCommand): Observable<void>;
+    delete(id: number): Observable<void>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class PlaylistsClient implements IPlaylistsClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getPlaylistsWithPagination(pageNumber: number | undefined, pageSize: number | undefined): Observable<PaginatedListOfPlaylistBriefDto> {
+        let url_ = this.baseUrl + "/api/Playlists?";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "PageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPlaylistsWithPagination(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPlaylistsWithPagination(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PaginatedListOfPlaylistBriefDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PaginatedListOfPlaylistBriefDto>;
+        }));
+    }
+
+    protected processGetPlaylistsWithPagination(response: HttpResponseBase): Observable<PaginatedListOfPlaylistBriefDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PaginatedListOfPlaylistBriefDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    create(command: CreatePlaylistCommand): Observable<number> {
+        let url_ = this.baseUrl + "/api/Playlists";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    getPlaylistSongsWithPagination(id: number | undefined): Observable<PlaylistBriefDto> {
+        let url_ = this.baseUrl + "/api/Playlists/get-songs?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPlaylistSongsWithPagination(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPlaylistSongsWithPagination(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PlaylistBriefDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PlaylistBriefDto>;
+        }));
+    }
+
+    protected processGetPlaylistSongsWithPagination(response: HttpResponseBase): Observable<PlaylistBriefDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PlaylistBriefDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    addSongToPlaylist(command: AddSongToPlaylistCommand): Observable<number> {
+        let url_ = this.baseUrl + "/api/Playlists/add-song-to-playlist";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddSongToPlaylist(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddSongToPlaylist(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processAddSongToPlaylist(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    update(id: number, command: UpdatePlaylistCommand): Observable<void> {
+        let url_ = this.baseUrl + "/api/Playlists/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            }));
+        } else {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let resultdefault: any = null;
+            let resultDatadefault = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            resultdefault = ProblemDetails.fromJS(resultDatadefault);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            }));
+        }
+    }
+
+    delete(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/Playlists/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let resultdefault: any = null;
+            let resultDatadefault = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            resultdefault = ProblemDetails.fromJS(resultDatadefault);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            }));
+        }
+    }
+}
+
 export interface ISongsClient {
     getSongsWithPagination(pageNumber: number | undefined, pageSize: number | undefined): Observable<PaginatedListOfSongBriefDto>;
     create(command: CreateSongCommand): Observable<number>;
@@ -327,15 +673,15 @@ export class WeatherForecastClient implements IWeatherForecastClient {
     }
 }
 
-export class PaginatedListOfSongBriefDto implements IPaginatedListOfSongBriefDto {
-    items?: SongBriefDto[];
+export class PaginatedListOfPlaylistBriefDto implements IPaginatedListOfPlaylistBriefDto {
+    items?: PlaylistBriefDto[];
     pageNumber?: number;
     totalPages?: number;
     totalCount?: number;
     hasPreviousPage?: boolean;
     hasNextPage?: boolean;
 
-    constructor(data?: IPaginatedListOfSongBriefDto) {
+    constructor(data?: IPaginatedListOfPlaylistBriefDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -349,7 +695,7 @@ export class PaginatedListOfSongBriefDto implements IPaginatedListOfSongBriefDto
             if (Array.isArray(_data["items"])) {
                 this.items = [] as any;
                 for (let item of _data["items"])
-                    this.items!.push(SongBriefDto.fromJS(item));
+                    this.items!.push(PlaylistBriefDto.fromJS(item));
             }
             this.pageNumber = _data["pageNumber"];
             this.totalPages = _data["totalPages"];
@@ -359,9 +705,9 @@ export class PaginatedListOfSongBriefDto implements IPaginatedListOfSongBriefDto
         }
     }
 
-    static fromJS(data: any): PaginatedListOfSongBriefDto {
+    static fromJS(data: any): PaginatedListOfPlaylistBriefDto {
         data = typeof data === 'object' ? data : {};
-        let result = new PaginatedListOfSongBriefDto();
+        let result = new PaginatedListOfPlaylistBriefDto();
         result.init(data);
         return result;
     }
@@ -382,13 +728,69 @@ export class PaginatedListOfSongBriefDto implements IPaginatedListOfSongBriefDto
     }
 }
 
-export interface IPaginatedListOfSongBriefDto {
-    items?: SongBriefDto[];
+export interface IPaginatedListOfPlaylistBriefDto {
+    items?: PlaylistBriefDto[];
     pageNumber?: number;
     totalPages?: number;
     totalCount?: number;
     hasPreviousPage?: boolean;
     hasNextPage?: boolean;
+}
+
+export class PlaylistBriefDto implements IPlaylistBriefDto {
+    id?: number;
+    name?: string | undefined;
+    coverImageUrl?: string | undefined;
+    songs?: SongBriefDto[];
+
+    constructor(data?: IPlaylistBriefDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.coverImageUrl = _data["coverImageUrl"];
+            if (Array.isArray(_data["songs"])) {
+                this.songs = [] as any;
+                for (let item of _data["songs"])
+                    this.songs!.push(SongBriefDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PlaylistBriefDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PlaylistBriefDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["coverImageUrl"] = this.coverImageUrl;
+        if (Array.isArray(this.songs)) {
+            data["songs"] = [];
+            for (let item of this.songs)
+                data["songs"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface IPlaylistBriefDto {
+    id?: number;
+    name?: string | undefined;
+    coverImageUrl?: string | undefined;
+    songs?: SongBriefDto[];
 }
 
 export class SongBriefDto implements ISongBriefDto {
@@ -443,16 +845,11 @@ export interface ISongBriefDto {
     artistName?: string | undefined;
 }
 
-export class CreateSongCommand implements ICreateSongCommand {
-    title!: string;
-    locationUrl?: string | undefined;
+export class CreatePlaylistCommand implements ICreatePlaylistCommand {
+    name!: string;
     coverImageUrl?: string | undefined;
-    genreName?: string | undefined;
-    genreDescription?: string | undefined;
-    artistName?: string | undefined;
-    artistImageUrl?: string | undefined;
 
-    constructor(data?: ICreateSongCommand) {
+    constructor(data?: ICreatePlaylistCommand) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -463,44 +860,69 @@ export class CreateSongCommand implements ICreateSongCommand {
 
     init(_data?: any) {
         if (_data) {
-            this.title = _data["title"];
-            this.locationUrl = _data["locationUrl"];
+            this.name = _data["name"];
             this.coverImageUrl = _data["coverImageUrl"];
-            this.genreName = _data["genreName"];
-            this.genreDescription = _data["genreDescription"];
-            this.artistName = _data["artistName"];
-            this.artistImageUrl = _data["artistImageUrl"];
         }
     }
 
-    static fromJS(data: any): CreateSongCommand {
+    static fromJS(data: any): CreatePlaylistCommand {
         data = typeof data === 'object' ? data : {};
-        let result = new CreateSongCommand();
+        let result = new CreatePlaylistCommand();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["title"] = this.title;
-        data["locationUrl"] = this.locationUrl;
+        data["name"] = this.name;
         data["coverImageUrl"] = this.coverImageUrl;
-        data["genreName"] = this.genreName;
-        data["genreDescription"] = this.genreDescription;
-        data["artistName"] = this.artistName;
-        data["artistImageUrl"] = this.artistImageUrl;
         return data;
     }
 }
 
-export interface ICreateSongCommand {
-    title: string;
-    locationUrl?: string | undefined;
+export interface ICreatePlaylistCommand {
+    name: string;
     coverImageUrl?: string | undefined;
-    genreName?: string | undefined;
-    genreDescription?: string | undefined;
-    artistName?: string | undefined;
-    artistImageUrl?: string | undefined;
+}
+
+export class AddSongToPlaylistCommand implements IAddSongToPlaylistCommand {
+    playlistId?: number;
+    songId?: number;
+
+    constructor(data?: IAddSongToPlaylistCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.playlistId = _data["playlistId"];
+            this.songId = _data["songId"];
+        }
+    }
+
+    static fromJS(data: any): AddSongToPlaylistCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddSongToPlaylistCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["playlistId"] = this.playlistId;
+        data["songId"] = this.songId;
+        return data;
+    }
+}
+
+export interface IAddSongToPlaylistCommand {
+    playlistId?: number;
+    songId?: number;
 }
 
 export class ProblemDetails implements IProblemDetails {
@@ -565,6 +987,170 @@ export interface IProblemDetails {
     instance?: string | undefined;
 
     [key: string]: any;
+}
+
+export class UpdatePlaylistCommand implements IUpdatePlaylistCommand {
+    id?: number;
+    name!: string;
+
+    constructor(data?: IUpdatePlaylistCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+        }
+    }
+
+    static fromJS(data: any): UpdatePlaylistCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdatePlaylistCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        return data;
+    }
+}
+
+export interface IUpdatePlaylistCommand {
+    id?: number;
+    name: string;
+}
+
+export class PaginatedListOfSongBriefDto implements IPaginatedListOfSongBriefDto {
+    items?: SongBriefDto[];
+    pageNumber?: number;
+    totalPages?: number;
+    totalCount?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
+
+    constructor(data?: IPaginatedListOfSongBriefDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(SongBriefDto.fromJS(item));
+            }
+            this.pageNumber = _data["pageNumber"];
+            this.totalPages = _data["totalPages"];
+            this.totalCount = _data["totalCount"];
+            this.hasPreviousPage = _data["hasPreviousPage"];
+            this.hasNextPage = _data["hasNextPage"];
+        }
+    }
+
+    static fromJS(data: any): PaginatedListOfSongBriefDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaginatedListOfSongBriefDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["pageNumber"] = this.pageNumber;
+        data["totalPages"] = this.totalPages;
+        data["totalCount"] = this.totalCount;
+        data["hasPreviousPage"] = this.hasPreviousPage;
+        data["hasNextPage"] = this.hasNextPage;
+        return data;
+    }
+}
+
+export interface IPaginatedListOfSongBriefDto {
+    items?: SongBriefDto[];
+    pageNumber?: number;
+    totalPages?: number;
+    totalCount?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
+}
+
+export class CreateSongCommand implements ICreateSongCommand {
+    title!: string;
+    locationUrl?: string | undefined;
+    coverImageUrl?: string | undefined;
+    genreName?: string | undefined;
+    genreDescription?: string | undefined;
+    artistName?: string | undefined;
+    artistImageUrl?: string | undefined;
+
+    constructor(data?: ICreateSongCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.title = _data["title"];
+            this.locationUrl = _data["locationUrl"];
+            this.coverImageUrl = _data["coverImageUrl"];
+            this.genreName = _data["genreName"];
+            this.genreDescription = _data["genreDescription"];
+            this.artistName = _data["artistName"];
+            this.artistImageUrl = _data["artistImageUrl"];
+        }
+    }
+
+    static fromJS(data: any): CreateSongCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateSongCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["title"] = this.title;
+        data["locationUrl"] = this.locationUrl;
+        data["coverImageUrl"] = this.coverImageUrl;
+        data["genreName"] = this.genreName;
+        data["genreDescription"] = this.genreDescription;
+        data["artistName"] = this.artistName;
+        data["artistImageUrl"] = this.artistImageUrl;
+        return data;
+    }
+}
+
+export interface ICreateSongCommand {
+    title: string;
+    locationUrl?: string | undefined;
+    coverImageUrl?: string | undefined;
+    genreName?: string | undefined;
+    genreDescription?: string | undefined;
+    artistName?: string | undefined;
+    artistImageUrl?: string | undefined;
 }
 
 export class UpdateSongCommand implements IUpdateSongCommand {

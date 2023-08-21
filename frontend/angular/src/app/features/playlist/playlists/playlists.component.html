@@ -1,0 +1,25 @@
+<div class="line line--light"></div>
+
+<div class="body">
+  <div class="body__playlists">
+    <h1 class="playlists__title">Hear your own playlists and the albums you’ve created:</h1>
+    <div class="playlists__cards">
+      <div class="playlists__card" *ngFor="let playlist of playlistBriefDto" >
+        <a [routerLink]="[playlist.id]">
+          <div class="card__image">
+            <img src="{{ playlist.coverImageUrl }}" alt="Playlist title">
+          </div>
+          <div class="card__text">
+            <div class="card__title">{{ playlist.name }}</div>
+            <div class="card__description">Pineapple Express</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="vertical_line"></div>
+  <div class="body__rightside">
+    <app-artist-feature></app-artist-feature>
+  </div>
+</div>
+
