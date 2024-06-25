@@ -1,0 +1,34 @@
+
+<div class="add-playlist">
+  <h1>Add new playlist</h1>
+
+  <div class="add-playlist-form">
+    <form [formGroup]="palyListForm" (ngSubmit)="onSubmit(palyListForm.value)">
+
+      <div class="playlist-name">
+        <label for="name">Playlist name: </label>
+        <input id="name" type="text" formControlName="name">
+      </div>
+
+      <br>
+
+      <div class="playlist-cover-url">
+        <label for="last-name">Cover image url: </label>
+        <input id="last-name" type="text" formControlName="coverImageUrl">
+      </div>
+
+      <br>
+
+      <p>Complete the form to enable button.</p>
+
+      <br>
+
+      <button type="submit" [disabled]="!palyListForm.valid">Submit</button>
+
+    </form>
+  </div>
+</div>
+
+
+
+

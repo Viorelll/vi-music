@@ -2,6 +2,9 @@
 
 <div class="body">
   <div class="body__playlists">
+    <a [routerLink]="routerAddPlaylistLink">
+      <div class="playlists__add">Add</div>
+    </a>
     <h1 class="playlists__title">Hear your own playlists and the albums you’ve created:</h1>
     <div class="playlists__cards">
       <div class="playlists__card" *ngFor="let playlist of playlistBriefDto" >

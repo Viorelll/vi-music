@@ -5,6 +5,18 @@
     width: 100%;
     padding: 20px 50px;
 
+    .playlists__add {
+      padding: 10px;
+      width: 100px;
+      border-radius: 3px;
+      background-color: white;
+      color: rgb(132, 87, 158);
+      border: 2px solid rgb(132, 87, 158);
+      margin-bottom: 15px;
+      text-align: center;
+      font-weight: 300;
+      font-size: 22px;
+    }
     .playlists__title {
       font-weight: 300;
       font-size: 22px;
@@ -81,4 +93,10 @@
 .vertical_line {
   border-right: 1px solid #d6d6d6;
   margin-right: 10px;
+}
+
+.btn {
+  padding: 10px;
+  width: 60px;
+  height: 20px;
 }

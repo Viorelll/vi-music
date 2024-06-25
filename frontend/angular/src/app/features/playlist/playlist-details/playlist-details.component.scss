@@ -185,3 +185,37 @@
   border-right: 1px solid #d6d6d6;
 }
 
+
+dialog {
+  background-color: rgb(132, 87, 158);
+  padding: 10px;
+  color: white;
+  border-color: transparent;
+  overflow: hidden;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 0 20px 8px #d0d0d0;
+  height: 100px;
+  width: 200px;
+  margin: auto auto;
+  line-height: 1.6;
+}
+.dialog-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 80px;
+
+}
+.dialog-button {
+  margin-top: 10px;
+
+}
+
+.dialog-button button {
+  border: 1px solid white;
+  color: white;
+  border-radius: 4px;
+  padding: 5px;
+  background-color: transparent;
+
+}

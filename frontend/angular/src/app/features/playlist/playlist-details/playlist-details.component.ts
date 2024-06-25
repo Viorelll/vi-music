@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { SongBriefDto } from 'src/app/web-api-client';
+import { ActivatedRoute, Router } from '@angular/router';
+import { PlaylistsClient, SongBriefDto } from 'src/app/web-api-client';
 import { Song } from '../models/song.model';
 
 @Component({
@@ -15,8 +15,11 @@ export class PlaylistDetailsComponent {
   public playlistCoverImage: string = "";
   public playlistSongCount: number = 0;
 
+
   constructor(
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private client: PlaylistsClient,
+    private router: Router
   ) {}
 
 
@@ -35,5 +38,15 @@ export class PlaylistDetailsComponent {
 
         this.playlistSongCount = playlist.songs.length;
       });
+  }
+
+  onDeletePlaylist() {
+    this.route.paramMap.subscribe(param => {
+      const id = param.get('id')!;
+      this.client.delete(+id).subscribe(_ => {
+        (document.querySelector('dialog') as HTMLDialogElement).close();
+         this.router.navigate(['/playlists']);
+      }, error => console.error(error));
+    });
   }
 }

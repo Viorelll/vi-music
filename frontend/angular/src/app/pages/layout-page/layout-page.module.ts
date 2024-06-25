@@ -1,10 +1,10 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HeaderComponent } from './header/header.component';
-import { FooterComponent } from './footer/footer.component';
-import { LayoutComponent } from './layout/layout.component';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { PlaylistPageModule } from '../playlist-page/playlist-page.module';
+import { FooterComponent } from './footer/footer.component';
+import { HeaderComponent } from './header/header.component';
+import { LayoutComponent } from './layout/layout.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +15,7 @@ import { PlaylistPageModule } from '../playlist-page/playlist-page.module';
   imports: [
     CommonModule,
     RouterModule,
-    PlaylistPageModule
+    PlaylistPageModule,
   ],
   exports: [
     LayoutComponent

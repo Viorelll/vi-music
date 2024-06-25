@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, switchMap } from 'rxjs';
-import { PaginatedListOfPlaylistBriefDto, PlaylistBriefDto, PlaylistsClient, SongBriefDto, SongsClient } from 'src/app/web-api-client';
+import { Observable } from 'rxjs';
+import { PaginatedListOfPlaylistBriefDto, PlaylistBriefDto, PlaylistsClient } from 'src/app/web-api-client';
 
 @Component({
   selector: 'app-playlists',
@@ -13,6 +13,8 @@ export class PlaylistsComponent {
   public playlistBriefDto?: PlaylistBriefDto[] = [];
 
   playlistBriefDto$?: Observable<PaginatedListOfPlaylistBriefDto>;
+
+  public routerAddPlaylistLink = "add";
   // selectedId = 0;
 
   constructor(private route: ActivatedRoute, private client: PlaylistsClient) {
