@@ -21,13 +21,13 @@ jobs:
           dotnet-version: "8.0.x" # Use the latest .NET 8 version
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore backend/src/ViMusic.API
 
       - name: Build project
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build backend/src/ViMusic.API --configuration Release --no-restore
 
       - name: Publish project
-        run: dotnet publish -c Release -o publish_output --no-build --no-restore
+        run: dotnet publish backend/src/ViMusic.API -c Release -o publish_output --no-build --no-restore
 
       - name: "Login to Azure"
         uses: azure/login@v1
