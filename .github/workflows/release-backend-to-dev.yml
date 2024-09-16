@@ -8,5 +8,3 @@ jobs:
     uses: ./.github/workflows/build-deploy-backend-environment.yml
     with:
       environment: development
-    secrets:
-      creds: ${{ secrets.AZURE_CREDENTIALS }}
