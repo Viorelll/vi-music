@@ -1,0 +1,42 @@
+name: Deploy .NET 8 Web App to Azure
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "8.0.x" # Use the latest .NET 8 version
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build project
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Publish project
+        run: dotnet publish -c Release -o publish_output --no-build --no-restore
+
+      - name: "Login to Azure"
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }} # Use Azure Service Principal credentials
+
+      - name: "Deploy to Azure Web App"
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: "webapp-viqubapp-dev-ne" # Replace with your Azure App Service name
+          package: ./publish_output # Point to the folder where the app is published
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }} # Publish profile from Azure Web App

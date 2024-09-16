@@ -5,7 +5,7 @@ on:
 
 jobs:
   release:
-    uses: ./.github/workflows/build-deploy-environment.yml
+    uses: ./.github/workflows/build-deploy-ui-environment.yml
     with:
       environment: development
     secrets:
