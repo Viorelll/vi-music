@@ -5,7 +5,7 @@ on:
 
 jobs:
   release:
-    uses: ./deployment/frontend/build-deploy-environment.yml
+    uses: ./.github/workflows/build-deploy-environment.yml
     with:
       environment: development
     secrets:
