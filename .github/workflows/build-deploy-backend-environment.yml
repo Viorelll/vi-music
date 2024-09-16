@@ -15,24 +15,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: "8.0.x" # Use the latest .NET 8 version
+      # - name: Setup .NET
+      #   uses: actions/setup-dotnet@v3
+      #   with:
+      #     dotnet-version: "8.0.x" # Use the latest .NET 8 version
 
-      - name: Restore dependencies
-        run: dotnet restore backend/src/ViMusic.API
+      # - name: Restore dependencies
+      #   run: dotnet restore backend/src/ViMusic.API
 
-      - name: Build project
-        run: dotnet build backend/src/ViMusic.API --configuration Release --no-restore
+      # - name: Build project
+      #   run: dotnet build backend/src/ViMusic.API --configuration Release --no-restore
 
-      - name: Publish project
-        run: dotnet publish backend/src/ViMusic.API -c Release -o publish_output --no-build --no-restore
+      # - name: Publish project
+      #   run: dotnet publish backend/src/ViMusic.API -c Release -o publish_output --no-build --no-restore
 
       - name: "Login to Azure"
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }} # Use Azure Service Principal credentials
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: "Deploy to Azure Web App"
         uses: azure/webapps-deploy@v2
