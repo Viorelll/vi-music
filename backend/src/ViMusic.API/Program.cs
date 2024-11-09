@@ -20,13 +20,14 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
     app.UseMigrationsEndPoint();
 
-     // Initialise and seed database
-    using (var scope = app.Services.CreateScope())
-    {
-        var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
-        await initialiser.InitialiseAsync();
-        await initialiser.SeedAsync();
-    }
+    // Initialise and seed database
+    //USE MIGRATOR
+    //using (var scope = app.Services.CreateScope())
+    //{
+    //    var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
+    //    await initialiser.InitialiseAsync();
+    //    await initialiser.SeedAsync();
+    //}
 }
 
 app.UseHealthChecks("/health");

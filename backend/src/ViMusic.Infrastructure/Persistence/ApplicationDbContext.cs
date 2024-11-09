@@ -22,9 +22,11 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
         _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
     }
     public DbSet<Playlist> Playlists => Set<Playlist>();
+    public DbSet<PlaylistSong> PlaylistSongs => Set<PlaylistSong>();
     public DbSet<Album> Albums => Set<Album>();
     public DbSet<Artist> Artists => Set<Artist>();
     public DbSet<Genre> Genres => Set<Genre>();
+    public DbSet<User> Users => Set<User>();
     public DbSet<Song> Songs => Set<Song>();
 
     protected override void OnModelCreating(ModelBuilder builder)

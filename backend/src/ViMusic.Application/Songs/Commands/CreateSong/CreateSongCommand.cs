@@ -44,8 +44,7 @@ public class CreateSongCommandHandler : IRequestHandler<CreateSongCommand, int>
            Title = request.Title,
            LocationUrl = request.LocationUrl,
            CoverImageUrl = request.CoverImageUrl,
-           Artist = artist,
-           Genre = genre
+           Artist = artist
         };
 
         // entity.AddDomainEvent(new SongCreatedEvent(entity));

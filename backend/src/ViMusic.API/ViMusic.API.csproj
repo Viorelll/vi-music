@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.8" />
-    <!-- <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" /> -->
+     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" /> 
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
       <PrivateAssets>all</PrivateAssets>
@@ -28,14 +28,18 @@
     <ProjectReference Include="..\ViMusic.Infrastructure\ViMusic.Infrastructure.csproj" />
   </ItemGroup>
 
-  <!--  <Target Name="NSwag" AfterTargets="PostBuildEvent" Condition=" '$(Configuration)' == 'Debug' ">
-      <Exec ConsoleToMSBuild="true" ContinueOnError="true" WorkingDirectory="$(ProjectDir)" EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" Command="$(NSwagExe_Net70) run /variables:Configuration=$(Configuration)">
+  <ItemGroup>
+    <Folder Include="generated\" />
+  </ItemGroup>
+
+    <Target Name="NSwag" AfterTargets="PostBuildEvent" Condition=" '$(Configuration)' == 'Debug' ">
+      <Exec ConsoleToMSBuild="true" ContinueOnError="true" WorkingDirectory="$(ProjectDir)" EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" Command="nswag run nswag.json">
           <Output TaskParameter="ExitCode" PropertyName="NSwagExitCode" />
           <Output TaskParameter="ConsoleOutput" PropertyName="NSwagOutput" />
       </Exec>
 
       <Message Text="$(NSwagOutput)" Condition="'$(NSwagExitCode)' == '0'" Importance="low" />
       <Error Text="$(NSwagOutput)" Condition="'$(NSwagExitCode)' != '0'" />
-    </Target>-->
+    </Target>
 
 </Project>

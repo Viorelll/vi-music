@@ -2,21 +2,25 @@
   <div class="header__leftside">
     <div class="header__info">
       <div class="header_icon">
-        <img src="../../../../assets/img/logo.svg">
+        <img src="../../../../assets/img/logo.svg" />
       </div>
       <div class="header__text">
-        <div class="header__title"> {{ playlistName }}</div>
-        <div class="header__description">The most played tracks on SoundCloud this week</div>
+        <div class="header__title">{{ playlistName }}</div>
+        <div class="header__description">
+          The most played tracks on SoundCloud this week
+        </div>
       </div>
     </div>
     <div class="header__tracks">
       <div class="header__songs">{{ playlistSongCount }}</div>
-      <div class="header__name">{{ playlistSongCount > 1 ? 'tracks' : 'track' }} </div>
+      <div class="header__name">
+        {{ playlistSongCount > 1 ? "tracks" : "track" }}
+      </div>
       <div class="header__duration">14:30:27</div>
     </div>
   </div>
   <div class="header__rightside">
-    <img src="{{ playlistCoverImage }}" alt="Cover" width="340" height="340">
+    <img src="{{ playlistCoverImage }}" alt="Cover" width="340" height="340" />
   </div>
 </div>
 
@@ -25,7 +29,9 @@
     <div class="body__buttons">
       <div class="button"><i class="fa-solid fa-heart"></i>Like</div>
       <div class="button"><i class="fa-solid fa-edit"></i>Edit</div>
-      <div class="button" (click)="dialog.showModal()"><i class="fa-solid fa-trash"></i>Delete</div>
+      <div class="button" (click)="dialog.showModal()">
+        <i class="fa-solid fa-trash"></i>Delete
+      </div>
     </div>
     <div class="line line--light"></div>
     <div class="main__wrapper">
@@ -40,9 +46,7 @@
   </div>
 
   <dialog #dialog>
-    <div>
-      Are you sure that want to remove the playlist?:
-    </div>
+    <div>Are you sure that want to remove the playlist?:</div>
     <div class="dialog-buttons">
       <div class="dialog-button">
         <button (click)="onDeletePlaylist()">Yes</button>
@@ -52,6 +56,4 @@
       </div>
     </div>
   </dialog>
-
-
-
+</div>

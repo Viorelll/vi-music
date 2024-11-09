@@ -30,6 +30,9 @@ namespace ViMusic.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("ArtistId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("CoverImageUrl")
                         .HasColumnType("text");
 
@@ -38,6 +41,9 @@ namespace ViMusic.Infrastructure.Migrations
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
+
+                    b.Property<int>("GenreId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp with time zone");
@@ -49,6 +55,10 @@ namespace ViMusic.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ArtistId");
+
+                    b.HasIndex("GenreId");
 
                     b.ToTable("Albums");
                 });
@@ -141,9 +151,49 @@ namespace ViMusic.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Playlists");
+                });
+
+            modelBuilder.Entity("ViMusic.Domain.Entities.PlaylistSong", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("PlaylistId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("SongId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlaylistId");
+
+                    b.HasIndex("SongId");
+
+                    b.ToTable("PlaylistSongs");
                 });
 
             modelBuilder.Entity("ViMusic.Domain.Entities.Song", b =>
@@ -153,9 +203,6 @@ namespace ViMusic.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("AlbumId")
-                        .HasColumnType("integer");
 
                     b.Property<int>("ArtistId")
                         .HasColumnType("integer");
@@ -169,9 +216,6 @@ namespace ViMusic.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
-                    b.Property<int>("GenreId")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
@@ -181,38 +225,55 @@ namespace ViMusic.Infrastructure.Migrations
                     b.Property<string>("LocationUrl")
                         .HasColumnType("text");
 
-                    b.Property<int?>("PlaylistId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
-                    b.Property<string>("Url")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("AlbumId");
-
                     b.HasIndex("ArtistId");
-
-                    b.HasIndex("GenreId");
-
-                    b.HasIndex("PlaylistId");
 
                     b.ToTable("Songs");
                 });
 
-            modelBuilder.Entity("ViMusic.Domain.Entities.Song", b =>
+            modelBuilder.Entity("ViMusic.Domain.Entities.User", b =>
                 {
-                    b.HasOne("ViMusic.Domain.Entities.Album", null)
-                        .WithMany("Songs")
-                        .HasForeignKey("AlbumId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
 
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("ViMusic.Domain.Entities.Album", b =>
+                {
                     b.HasOne("ViMusic.Domain.Entities.Artist", "Artist")
-                        .WithMany("Songs")
+                        .WithMany("Albums")
                         .HasForeignKey("ArtistId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -223,28 +284,66 @@ namespace ViMusic.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ViMusic.Domain.Entities.Playlist", null)
-                        .WithMany("Songs")
-                        .HasForeignKey("PlaylistId");
-
                     b.Navigation("Artist");
 
                     b.Navigation("Genre");
                 });
 
-            modelBuilder.Entity("ViMusic.Domain.Entities.Album", b =>
+            modelBuilder.Entity("ViMusic.Domain.Entities.Playlist", b =>
                 {
-                    b.Navigation("Songs");
+                    b.HasOne("ViMusic.Domain.Entities.User", "User")
+                        .WithMany("Playlists")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ViMusic.Domain.Entities.PlaylistSong", b =>
+                {
+                    b.HasOne("ViMusic.Domain.Entities.Playlist", "Playlist")
+                        .WithMany("Songs")
+                        .HasForeignKey("PlaylistId");
+
+                    b.HasOne("ViMusic.Domain.Entities.Song", "Song")
+                        .WithMany("Playlists")
+                        .HasForeignKey("SongId");
+
+                    b.Navigation("Playlist");
+
+                    b.Navigation("Song");
+                });
+
+            modelBuilder.Entity("ViMusic.Domain.Entities.Song", b =>
+                {
+                    b.HasOne("ViMusic.Domain.Entities.Artist", "Artist")
+                        .WithMany()
+                        .HasForeignKey("ArtistId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Artist");
                 });
 
             modelBuilder.Entity("ViMusic.Domain.Entities.Artist", b =>
                 {
-                    b.Navigation("Songs");
+                    b.Navigation("Albums");
                 });
 
             modelBuilder.Entity("ViMusic.Domain.Entities.Playlist", b =>
                 {
                     b.Navigation("Songs");
+                });
+
+            modelBuilder.Entity("ViMusic.Domain.Entities.Song", b =>
+                {
+                    b.Navigation("Playlists");
+                });
+
+            modelBuilder.Entity("ViMusic.Domain.Entities.User", b =>
+                {
+                    b.Navigation("Playlists");
                 });
 #pragma warning restore 612, 618
         }

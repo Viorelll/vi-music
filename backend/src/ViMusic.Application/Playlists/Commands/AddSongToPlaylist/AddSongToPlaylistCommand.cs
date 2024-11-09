@@ -37,7 +37,13 @@ public class AddSongToPlaylistCommandHandler : IRequestHandler<AddSongToPlaylist
             throw new Exception("Song doesn't exist!");
         }
 
-        playlist.Songs.Add(song);
+        var playlistSong = new PlaylistSong
+        {
+            Playlist = playlist,
+            Song = song
+        };
+
+        playlist.Songs.Add(playlistSong);
 
         // entity.AddDomainEvent(new SongCreatedEvent(entity));
 

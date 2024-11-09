@@ -4,5 +4,8 @@ public class Playlist : BaseAuditableEntity
 {
     public string? Name { get; set; }
     public string? CoverImageUrl { get; set; }
-    public List<Song> Songs { get; set; } = new();
+    public int UserId { get; set; }
+    public required User User { get; set; }
+
+    public List<PlaylistSong> Songs { get; set; } = new();
 }

@@ -4,5 +4,7 @@ public class Album : BaseAuditableEntity
 {
     public string? Name { get; set; }
     public string? CoverImageUrl { get; set; }
-    public List<Song> Songs { get; set; } = new();
+
+    public Genre Genre { get; set; } = null!;
+    public Artist Artist { get; set; } = null!;
 }

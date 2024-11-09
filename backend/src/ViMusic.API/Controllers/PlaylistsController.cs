@@ -18,7 +18,7 @@ public class PlaylistsController : ApiControllerBase
     }
 
     [HttpGet("get-songs")]
-    public async Task<ActionResult<PlaylistBriefDto>> GetPlaylistSongsWithPagination([FromQuery] GetPlaylistSongsWithPaginationQuery query)
+    public async Task<ActionResult<PlaylistSongsBriefDto>> GetPlaylistSongsWithPagination([FromQuery] GetPlaylistSongsWithPaginationQuery query)
     {
         return await Mediator.Send(query);
     }

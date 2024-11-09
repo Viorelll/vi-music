@@ -13,23 +13,19 @@ export const playlistRoutes: Routes = [
   },
   {
     path: 'add',
-    component: AddPlaylistComponent
+    component: AddPlaylistComponent,
   },
   {
     path: ':id',
     component: PlaylistDetailsComponent,
     resolve: {
-      playlistBriefDto: playlistDetailResolver
-    }
+      playlistSongsBriefDto: playlistDetailResolver,
+    },
   },
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forChild(playlistRoutes)
-  ],
-  exports: [
-    RouterModule
-  ]
+  imports: [RouterModule.forChild(playlistRoutes)],
+  exports: [RouterModule],
 })
-export class PlaylistRoutingModule { }
+export class PlaylistRoutingModule {}

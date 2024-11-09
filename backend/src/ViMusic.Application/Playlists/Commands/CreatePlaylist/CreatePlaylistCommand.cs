@@ -2,6 +2,7 @@
 using ViMusic.Domain.Entities;
 // using ViMusic.Domain.Events;
 using MediatR;
+using ViMusic.Application.Common.Models;
 
 namespace ViMusic.Application.Playlists.Commands.CreatePlaylist;
 
@@ -24,6 +25,7 @@ public class CreatePlaylistCommandHandler : IRequestHandler<CreatePlaylistComman
     {
         var playlist = new Playlist
         {
+            User = Users.SystemUser,
             Name = request.Name,
             CoverImageUrl = request.CoverImageUrl
         };
