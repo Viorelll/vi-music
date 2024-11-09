@@ -7,7 +7,7 @@ namespace ViMusic.Application.Common.Models
         public static User SystemUser = new User
         {
             Username = "System",
-            Email = "system@viqub.com",
+            Email = "system@vimusic.com",
         };
     }
 }
