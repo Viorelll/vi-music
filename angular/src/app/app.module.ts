@@ -8,11 +8,11 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { LayoutPageModule } from './pages/layout-page/layout-page.module';
 import { SharedModule } from './shared/shared.module';
+import { API_BASE_URL } from './web-api-client';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
 
@@ -26,7 +26,12 @@ import { SharedModule } from './shared/shared.module';
     SharedModule,
     LayoutPageModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    {
+      provide: API_BASE_URL,
+      useValue: environment.apiRoot,
+    },
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
